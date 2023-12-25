@@ -27,7 +27,6 @@ int main(int argc, char *argv[])
 
         strcpy(argumentStr, "./flaga");
 
-        // Concatenate additional arguments dynamically
         for (int i = 2; i < argc; ++i)
         {
             argumentStr = realloc(argumentStr, strlen(argumentStr) + strlen(argv[i]) + 2);
@@ -42,10 +41,8 @@ int main(int argc, char *argv[])
             strcat(argumentStr, argv[i]);
         }
 
-        // Call the program with the constructed argument string
         system(argumentStr);
 
-        // Free the dynamically allocated memory
         free(argumentStr);
         break;
 
@@ -63,7 +60,6 @@ int main(int argc, char *argv[])
 
         strcpy(argumentString, "./flagb");
 
-        // Concatenate additional arguments dynamically
         for (int i = 2; i < argc; ++i)
         {
             argumentString = realloc(argumentString, strlen(argumentString) + strlen(argv[i]) + 2);
@@ -78,10 +74,8 @@ int main(int argc, char *argv[])
             strcat(argumentString, argv[i]);
         }
 
-        // Call the program with the constructed argument string
         system(argumentString);
 
-        // Free the dynamically allocated memory
         free(argumentString);
         break;
 

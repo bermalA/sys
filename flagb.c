@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-
 void tokenizeAndAppend(const char *content, char **output, size_t *output_size)
 {
     const char delimiters[] = " \t\n";
@@ -47,14 +46,12 @@ void tokenizeAndAppend(const char *content, char **output, size_t *output_size)
         exit(1);
     }
 
-    // Tokenize the input content
     char *token = strtok(copy, delimiters);
     while (token != NULL)
     {
-        size_t new_len = strlen(*output) + strlen(token) + 2; // Space for token, space and null-terminator
+        size_t new_len = strlen(*output) + strlen(token) + 2;
         if (new_len > *output_size)
         {
-            // Reallocate with more space
             *output_size *= 2;
             *output = realloc(*output, *output_size);
             if (*output == NULL)
@@ -65,13 +62,13 @@ void tokenizeAndAppend(const char *content, char **output, size_t *output_size)
             }
         }
 
-        strcat(*output, token); // Append token
-        strcat(*output, " ");   // Append space
+        strcat(*output, token);
+        strcat(*output, " ");
 
-        token = strtok(NULL, delimiters); // Get next token
+        token = strtok(NULL, delimiters);
     }
 
-    free(copy); // Free temporary copy used for tokenization
+    free(copy);
 }
 
 char *processFiles(int num_files, char **file_names)
@@ -85,7 +82,7 @@ char *processFiles(int num_files, char **file_names)
         exit(1);
     }
 
-    all_contents[0] = '\0'; // Initialize with an empty string
+    all_contents[0] = '\0';
 
     validateInputFiles(num_files);
 
@@ -112,19 +109,18 @@ char *processFiles(int num_files, char **file_names)
 
         snprintf(permissions_str, sizeof(permissions_str), "%o", file_stat.st_mode & 0777);
 
-        // Read and process the file content in chunks to handle potentially large files
         while (!feof(file))
         {
             char buffer[MAX_FILE_CONTENT_LENGTH];
 
             size_t read_size = fread(buffer, 1, sizeof(buffer), file);
 
-            buffer[read_size] = '\0'; // Null-terminate the read content
+            buffer[read_size] = '\0';
 
             tokenizeAndAppend(buffer, &all_contents, &output_size);
         }
 
-        fclose(file); // Move fclose outside the while loop
+        fclose(file);
     }
 
     checkFileSizeLimit(all_contents);
@@ -134,7 +130,7 @@ char *processFiles(int num_files, char **file_names)
 
 char *formatFileData(const char *filename, const char *permissions, size_t content_length)
 {
-    size_t needed_space = strlen(filename) + strlen(permissions) + content_length + 50; // plus additional chars and some buffer
+    size_t needed_space = strlen(filename) + strlen(permissions) + content_length + 50;
     char *formatted_data = malloc(needed_space);
 
     if (formatted_data == NULL)
@@ -142,12 +138,11 @@ char *formatFileData(const char *filename, const char *permissions, size_t conte
         fprintf(stderr, "Failed to allocate memory for formatted data.\n");
         exit(EXIT_FAILURE);
     }
-    sprintf(formatted_data, "|%s,%s|\nFile Content:\n", filename, permissions); // No actual content appended here,it's done in tokenizeAndAppend
+    sprintf(formatted_data, "|%s,%s|\nFile Content:\n", filename, permissions);
 
     return formatted_data;
 }
 
-// Definition of createOutputFile function
 void createOutputFile(char *all_contents, const char *output_filename)
 {
     FILE *output_file = fopen(output_filename, "w");
@@ -186,7 +181,6 @@ void CallFlagB(int count, char *argued[])
     createOutputFile(all_contents, output_filename);
 }
 
-// Error Handle
 void validateInputFiles(int num_files)
 {
     if (num_files > MAX_INPUT_FILES)
@@ -205,4 +199,3 @@ void checkFileSizeLimit(char *file_content)
         exit(1);
     }
 }
-
