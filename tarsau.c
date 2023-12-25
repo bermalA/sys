@@ -16,6 +16,37 @@ int main(int argc, char *argv[])
     {
     case 'a':
         printf("In use: Flag A\n");
+
+        char *argumentStr = malloc(strlen("./flaga") + 1);
+
+        if (argumentStr == NULL)
+        {
+            fprintf(stderr, "Memory allocation failed.\n");
+            return 1;
+        }
+
+        strcpy(argumentStr, "./flaga");
+
+        // Concatenate additional arguments dynamically
+        for (int i = 2; i < argc; ++i)
+        {
+            argumentStr = realloc(argumentStr, strlen(argumentStr) + strlen(argv[i]) + 2);
+
+            if (argumentStr == NULL)
+            {
+                fprintf(stderr, "Memory reallocation failed.\n");
+                return 1;
+            }
+
+            strcat(argumentStr, " ");
+            strcat(argumentStr, argv[i]);
+        }
+
+        // Call the program with the constructed argument string
+        system(argumentStr);
+
+        // Free the dynamically allocated memory
+        free(argumentStr);
         break;
 
     case 'b':
