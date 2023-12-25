@@ -59,7 +59,7 @@ void processOutputFile(const char *output_filename, const char *folder_path)
 
     fclose(output_file);
 
-    const char delimiters[] = " \n";
+    const char delimiters[] = "\n";
     char *token = strtok(content, delimiters);
     int index = 1;
     while (token != NULL)
